@@ -41,6 +41,7 @@ function Xmit_Latest (num: number) {
 input.onButtonPressed(Button.A, function () {
     if (Sender == 1) {
         Status_Code += 1
+        knight_rider_led()
         Xmit_Latest(Status_Code)
     }
 })
@@ -52,9 +53,7 @@ function knight_rider_led () {
     basic.clearScreen()
 }
 input.onButtonPressed(Button.B, function () {
-    if (Sender == 1) {
-        basic.showNumber(Status_Code)
-    }
+    basic.showNumber(Status_Code)
 })
 let Local_Status_Code = 0
 let Status_Code = 0
