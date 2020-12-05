@@ -76,7 +76,7 @@ if (Math.abs(input.magneticForce(Dimension.Strength)) > 350) {
     basic.pause(100)
     basic.clearScreen()
 }
-Update_Screen(1)
+Update_Screen(Status_Code)
 basic.forever(function () {
     if (Sender == 1) {
         new_status = pins.digitalReadPin(DigitalPin.P0)
