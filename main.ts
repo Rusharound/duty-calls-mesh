@@ -57,7 +57,6 @@ input.onButtonPressed(Button.B, function () {
         basic.showNumber(Local_Status_Code)
     }
 })
-let Previous_status = 0
 let new_status = 0
 let Local_Status_Code = 0
 let Status_Code = 0
@@ -81,11 +80,15 @@ Update_Screen(1)
 basic.forever(function () {
     if (Sender == 1) {
         new_status = pins.digitalReadPin(DigitalPin.P0)
-        if (new_status != Previous_status) {
+        if (new_status == 1 && Status_Code % 2 == 0) {
             Status_Code += 1
             Update_Screen(Status_Code)
             Xmit_Latest(Status_Code)
-            Previous_status = new_status
+        }
+        if (new_status == 0 && Status_Code % 2 != 0) {
+            Status_Code += 1
+            Update_Screen(Status_Code)
+            Xmit_Latest(Status_Code)
         }
     }
 })
