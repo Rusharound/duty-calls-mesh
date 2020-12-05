@@ -3,6 +3,30 @@ input.onPinPressed(TouchPin.P0, function () {
     knight_rider_led()
     Xmit_Latest(Status_Code)
 })
+radio.onReceivedNumber(function (receivedNumber) {
+    if (Sender == 0) {
+        if (receivedNumber != Local_Status_Code) {
+            if (receivedNumber == 0) {
+                Local_Status_Code = 0
+            } else {
+                Local_Status_Code = receivedNumber
+            }
+            basic.clearScreen()
+            if (Local_Status_Code % 2 == 0) {
+                basic.showLeds(`
+                    # # # # #
+                    # # # # #
+                    # # # # #
+                    # # # # #
+                    # # # # #
+                    `)
+            } else {
+                led.plot(2, 2)
+            }
+            Xmit_Latest(receivedNumber)
+        }
+    }
+})
 input.onPinReleased(TouchPin.P0, function () {
     Status_Code += 0.5
     knight_rider_led()
@@ -32,6 +56,7 @@ input.onButtonPressed(Button.B, function () {
         basic.showNumber(Status_Code)
     }
 })
+let Local_Status_Code = 0
 let Status_Code = 0
 let Door_status = 0
 let Sender = 0
