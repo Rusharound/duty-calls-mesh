@@ -53,7 +53,11 @@ function knight_rider_led () {
     basic.clearScreen()
 }
 input.onButtonPressed(Button.B, function () {
-    basic.showNumber(Status_Code)
+    if (Sender == 1) {
+        basic.showNumber(Status_Code)
+    } else {
+        basic.showNumber(Local_Status_Code)
+    }
 })
 let Local_Status_Code = 0
 let Status_Code = 0
