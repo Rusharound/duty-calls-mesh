@@ -1,6 +1,3 @@
-input.onPinPressed(TouchPin.P0, function () {
-	
-})
 radio.onReceivedNumber(function (receivedNumber) {
     if (Sender == 0) {
         if (receivedNumber != Local_Status_Code) {
@@ -9,19 +6,8 @@ radio.onReceivedNumber(function (receivedNumber) {
             } else {
                 Local_Status_Code = receivedNumber
             }
-            basic.clearScreen()
-            if (Local_Status_Code % 2 == 0) {
-                basic.showLeds(`
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    # # # # #
-                    `)
-            } else {
-                led.plot(2, 2)
-            }
             Xmit_Latest(receivedNumber)
+            Update_Screen(Local_Status_Code)
         }
     }
 })
@@ -34,7 +20,7 @@ function Xmit_Latest (num: number) {
 input.onButtonPressed(Button.A, function () {
     if (Sender == 1) {
         Status_Code += 1
-        knight_rider_led()
+        Update_Screen(Status_Code)
         Xmit_Latest(Status_Code)
     }
 })
@@ -50,6 +36,20 @@ input.onButtonPressed(Button.AB, function () {
         knight_rider_led()
     }
 })
+function Update_Screen (val: number) {
+    basic.clearScreen()
+    if (val % 2 == 0) {
+        basic.showLeds(`
+            # # # # #
+            # # # # #
+            # # # # #
+            # # # # #
+            # # # # #
+            `)
+    } else {
+        led.plot(2, 2)
+    }
+}
 input.onButtonPressed(Button.B, function () {
     if (Sender == 1) {
         basic.showNumber(Status_Code)
@@ -77,13 +77,14 @@ if (Math.abs(input.magneticForce(Dimension.Strength)) > 350) {
     basic.pause(100)
     basic.clearScreen()
 }
+Update_Screen(1)
 basic.forever(function () {
     if (Sender == 1) {
         new_status = pins.digitalReadPin(DigitalPin.P0)
         if (new_status != Previous_status) {
             Status_Code += 1
+            Update_Screen(Status_Code)
             Xmit_Latest(Status_Code)
-            basic.showNumber(Status_Code)
             Previous_status = new_status
         }
     }
