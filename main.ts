@@ -1,10 +1,5 @@
 input.onPinPressed(TouchPin.P0, function () {
-    if (Sender == 1) {
-        Status_Code += 1
-        Xmit_Latest(Status_Code)
-        basic.showNumber(Status_Code)
-        basic.pause(1000)
-    }
+	
 })
 radio.onReceivedNumber(function (receivedNumber) {
     if (Sender == 0) {
@@ -29,14 +24,6 @@ radio.onReceivedNumber(function (receivedNumber) {
             Xmit_Latest(receivedNumber)
         }
     }
-})
-input.onPinReleased(TouchPin.P0, function () {
-    if (Sender == 1) {
-        Status_Code += 1
-        Xmit_Latest(Status_Code)
-    }
-    basic.showNumber(Status_Code)
-    basic.pause(1000)
 })
 function Xmit_Latest (num: number) {
     for (let index = 0; index < Send_cycles; index++) {
@@ -70,6 +57,8 @@ input.onButtonPressed(Button.B, function () {
         basic.showNumber(Local_Status_Code)
     }
 })
+let Previous_status = 0
+let new_status = 0
 let Local_Status_Code = 0
 let Status_Code = 0
 let Sender = 0
@@ -88,3 +77,14 @@ if (Math.abs(input.magneticForce(Dimension.Strength)) > 350) {
     basic.pause(100)
     basic.clearScreen()
 }
+basic.forever(function () {
+    if (Sender == 1) {
+        new_status = pins.digitalReadPin(DigitalPin.P0)
+        if (new_status != Previous_status) {
+            Status_Code += 1
+            Xmit_Latest(Status_Code)
+            basic.showNumber(Status_Code)
+            Previous_status = new_status
+        }
+    }
+})
